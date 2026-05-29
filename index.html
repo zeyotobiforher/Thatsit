@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Birthday Janani 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ffd1dc, #ffb6c1, #ff9ec7);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* Sakura petals falling */
+  .petal {
+    position: fixed;
+    top: -10%;
+    width: 15px; height: 15px;
+    background: radial-gradient(circle at 30% 30%, #ffc0cb, #ff69b4);
+    border-radius: 150% 0 150% 0;
+    opacity: 0.8;
+    animation: fall linear infinite;
+    z-index: 1;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); }
+  }
+
+  /* Start screen */
+  #startScreen {
+    position: fixed; inset:0;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    background: rgba(255,182,193,0.4);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    text-align:center; padding:20px;
+  }
+  #startScreen h1 {
+    font-family:'Dancing Script', cursive;
+    color:#d63384; font-size:3rem;
+    text-shadow: 2px 2px 8px #fff;
+    margin-bottom: 20px;
+  }
+  #startBtn {
+    background:#ff4d94; color:white; border:none;
+    padding: 15px 40px; font-size:1.3rem; border-radius:50px;
+    cursor:pointer; box-shadow:0 6px 20px rgba(255,77,148,0.5);
+    transition:transform .3s;
+    font-family:'Poppins'; font-weight:600;
+  }
+  #startBtn:hover { transform: scale(1.1); }
+
+  /* Gift box */
+  #giftContainer {
+    position: absolute;
+    top:50%; left:50%;
+    transform: translate(-50%, -50%);
+    text-align:center;
+    z-index: 5;
+  }
+  #giftBox {
+    width: 280px;
+    cursor: pointer;
+    animation: bounce 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 10px 30px rgba(255,77,148,0.5));
+    transition: transform 0.6s;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  #tapText {
+    color:#d63384; font-size:1.4rem; margin-top:20px;
+    font-weight:600;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .opened #giftBox {
+    transform: scale(0) rotate(720deg);
+    opacity: 0;
+  }
+
+  /* Balloons */
+  .balloon {
+    position: fixed;
+    bottom: -150px;
+    width: 60px; height: 75px;
+    border-radius: 50%;
+    z-index: 10;
+    animation: floatUp linear forwards;
+  }
+  .balloon::after {
+    content:'';
+    position:absolute;
+    bottom: -8px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid inherit;
+  }
+  .balloon::before {
+    content:'';
+    position:absolute;
+    bottom:-120px; left:50%;
+    width: 2px; height: 120px;
+    background: rgba(255,255,255,0.6);
+  }
+  @keyframes floatUp {
+    0% { bottom:-150px; opacity:1; }
+    100% { bottom:110%; opacity:0.9; transform: translateX(var(--drift)); }
+  }
+
+  /* Birthday message */
+  #message {
+    position: fixed;
+    top:50%; left:50%;
+    transform: translate(-50%,-50%) scale(0);
+    text-align:center;
+    z-index: 20;
+    opacity: 0;
+    transition: all 1.2s cubic-bezier(.34,1.56,.64,1);
+    width: 90%; max-width: 600px;
+    padding: 30px;
+  }
+  #message.show {
+    transform: translate(-50%,-50%) scale(1);
+    opacity: 1;
+  }
+  #message h1 {
+    font-family:'Dancing Script', cursive;
+    font-size: 4rem;
+    background: linear-gradient(45deg, #ff4d94, #ff80ab, #d63384);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255,255,255,0.8);
+    margin-bottom:10px;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 10px #ff80ab); }
+    to { filter: drop-shadow(0 0 25px #ff4d94); }
+  }
+  #message h2 {
+    font-family:'Dancing Script', cursive;
+    color:#d63384; font-size:3rem;
+    margin-bottom:25px;
+  }
+  #message p {
+    background: rgba(255,255,255,0.85);
+    padding: 25px;
+    border-radius: 20px;
+    color:#7a1f4d;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    box-shadow: 0 10px 30px rgba(255,77,148,0.3);
+    border: 2px dashed #ff80ab;
+  }
+  #message .from {
+    margin-top:15px;
+    color:#d63384;
+    font-style:italic;
+    font-weight:600;
+  }
+
+  /* Confetti */
+  .confetti {
+    position: fixed; top:-10px;
+    width:10px; height:10px;
+    z-index: 15;
+    animation: confettiFall 4s linear forwards;
+  }
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity:0; }
+  }
+
+  @media (max-width: 600px) {
+    #message h1 { font-size: 2.5rem; }
+    #message h2 { font-size: 2rem; }
+    #message p { font-size: 0.95rem; }
+    #giftBox { width: 200px; }
+    #startScreen h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Start Screen (needed for audio autoplay permission) -->
+<div id="startScreen">
+  <h1>🌸 A Surprise for Janani 🌸</h1>
+  <p style="color:#d63384;margin-bottom:25px;font-size:1.1rem;">Tap below to begin ✨</p>
+  <button id="startBtn">Open Your Surprise 🎁</button>
+</div>
+
+<!-- Gift Box -->
+<div id="giftContainer" style="display:none;">
+  <img id="giftBox" src="https://novellum-filestore-mcp.s3.us-east-2.amazonaws.com/atxp:atxp_acct_naTcnnr8A9V6lQoubrGDE/f5fb8ba0-f311-4e95-9ca3-31d37ee88a3d.png" alt="Gift Box"/>
+  <div id="tapText">✨ Tap the gift to unbox ✨</div>
+</div>
+
+<!-- Birthday Message -->
+<div id="message">
+  <h1>Happy Birthday</h1>
+  <h2>Janani 🎂</h2>
+  <p>
+    Janani wish you happy birthday i made my full efforts i hope that you like this........ 
+    you was such a nice person pa and cares about all. iam don't know to what I was saying 
+    but I like so much ♾️🤍
+  </p>
+  <div class="from">— With love 💕</div>
+</div>
+
+<!-- Background Music - REPLACE THE SRC WITH YOUR SONG URL -->
+<audio id="bgMusic" loop>
+  <source src="https://youtu.be/MVuX0FrR-hA?si=KrUfi7WQ6USgkFsT" type="audio/mpeg">
+</audio>
+
+<script>
+  // Create falling sakura petals
+  for (let i = 0; i < 25; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + '%';
+    petal.style.animationDuration = (5 + Math.random() * 7) + 's';
+    petal.style.animationDelay = Math.random() * 5 + 's';
+    petal.style.width = petal.style.height = (10 + Math.random() * 15) + 'px';
+    document.body.appendChild(petal);
+  }
+
+  const startBtn = document.getElementById('startBtn');
+  const startScreen = document.getElementById('startScreen');
+  const giftContainer = document.getElementById('giftContainer');
+  const giftBox = document.getElementById('giftBox');
+  const message = document.getElementById('message');
+  const music = document.getElementById('bgMusic');
+
+  startBtn.addEventListener('click', () => {
+    startScreen.style.display = 'none';
+    giftContainer.style.display = 'block';
+    music.volume = 0.6;
+    music.play().catch(e => console.log('Audio play failed:', e));
+  });
+
+  // Pink shades for balloons
+  const pinkShades = ['#ff4d94','#ff80ab','#ffb6c1','#ffc0cb','#ff69b4','#f78fb3','#ff9ec7','#e91e63'];
+
+  giftBox.addEventListener('click', () => {
+    giftContainer.classList.add('opened');
+
+    // Launch 17 balloons 🎈
+    for (let i = 0; i < 17; i++) {
+      setTimeout(() => {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        const color = pinkShades[Math.floor(Math.random()*pinkShades.length)];
+        balloon.style.background = `radial-gradient(circle at 30% 30%, #fff, ${color})`;
+        balloon.style.left = (10 + Math.random() * 80) + '%';
+        balloon.style.animationDuration = (5 + Math.random() * 4) + 's';
+        balloon.style.setProperty('--drift', (Math.random()*200 - 100) + 'px');
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 10000);
+      }, i * 150);
+    }
+
+    // Launch confetti
+    for (let i = 0; i < 60; i++) {
+      setTimeout(() => {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + '%';
+        c.style.background = pinkShades[Math.floor(Math.random()*pinkShades.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        c.style.animationDuration = (3 + Math.random()*3) + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 6000);
+      }, i * 50);
+    }
+
+    // Show message after gift opens
+    setTimeout(() => {
+      giftContainer.style.display = 'none';
+      message.classList.add('show');
+    }, 2000);
+  });
+</script>
+
+</body>
+  </html>
